@@ -1,12 +1,10 @@
 package com.ecommerce.project.Controller;
 
 import com.ecommerce.project.Service.CategoryService;
-import com.ecommerce.project.config.AppConfig;
 import com.ecommerce.project.config.AppConstans;
 import com.ecommerce.project.payload.CategoryDTO;
 import com.ecommerce.project.payload.CategoryResponse;
 import jakarta.validation.Valid;
-import org.aspectj.bridge.IMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

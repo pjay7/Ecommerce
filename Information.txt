@@ -1,0 +1,8 @@
+Category and product RESTful APIs
+
+Custom UserDetails and UserDetailService
+    Create implementations of UserDetails and UserDetailsService and connect with our User model
+
+Jwt from cookie
+generate jwt cookie: generate jwt from username and get jwt from cookie in jwtutils
+sending jwt from cookie

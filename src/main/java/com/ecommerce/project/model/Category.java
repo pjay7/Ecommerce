@@ -1,11 +1,11 @@
 package com.ecommerce.project.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.List;
 
 @Entity(name =  "categories")
 public class Category {
@@ -15,7 +15,7 @@ public class Category {
     private Long categoryId;
 
     @NotBlank
-    @Size(min=5, message = "Category Name must contain 5 character")
+    @Size(min=3, message = "Category Name must contain 3 character")
     private String categoryName;
 
     public Long getCategoryId() {
@@ -40,5 +40,12 @@ public class Category {
     public Category(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+    }
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
+
+    public List<Product> getProducts() {
+        return products;
     }
 }

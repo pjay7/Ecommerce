@@ -1,6 +1,6 @@
 package com.ecommerce.project.Service;
 
-import com.ecommerce.project.Repositories.CategoryRepository;
+import com.ecommerce.project.repositories.CategoryRepository;
 import com.ecommerce.project.exceptions.APIException;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
@@ -27,27 +27,27 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-        Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
-        Pageable pageDetails = PageRequest .of(pageNumber, pageSize, sortByAndOrder);
-        Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
-        List<Category> categories = categoryPage.getContent();
-        if(categories.isEmpty()){
-            throw new APIException("No category created till now.");
+            Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
+                    ? Sort.by(sortBy).ascending()
+                    : Sort.by(sortBy).descending();
+            Pageable pageDetails = PageRequest .of(pageNumber, pageSize, sortByAndOrder);
+            Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
+            List<Category> categories = categoryPage.getContent();
+            if(categories.isEmpty()){
+                throw new APIException("No category created till now.");
+            }
+            List<CategoryDTO> categoryDTOS = categories.stream()
+                    .map(category -> modelMapper.map(category, CategoryDTO.class))
+                    .toList();
+            CategoryResponse categoryResponse = new CategoryResponse();
+            categoryResponse.setContent(categoryDTOS);
+            categoryResponse.setPageNumber(categoryPage.getNumber());
+            categoryResponse.setPageSize(categoryPage.getSize());
+            categoryResponse.setTotalElements(categoryPage.getTotalElements());
+            categoryResponse.setTotalPages(categoryPage.getTotalPages());
+            categoryResponse.setLastPage(categoryPage.isLast());
+            return categoryResponse;
         }
-        List<CategoryDTO> categoryDTOS = categories.stream()
-                .map(category -> modelMapper.map(category, CategoryDTO.class))
-                .toList();
-        CategoryResponse categoryResponse = new CategoryResponse();
-        categoryResponse.setContent(categoryDTOS);
-        categoryResponse.setPageNumber(categoryPage.getNumber());
-        categoryResponse.setPageSize(categoryPage.getSize());
-        categoryResponse.setTotalElements(categoryPage.getTotalElements());
-        categoryResponse.setTotalPages(categoryPage.getTotalPages());
-        categoryResponse.setLastPage(categoryPage.isLast());
-        return categoryResponse;
-    }
 
     @Override
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
